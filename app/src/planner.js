@@ -208,6 +208,66 @@ function insertTasksByCapacity(profile, startDateKey, tasks) {
   return result;
 }
 
+function sumTaskMinutes(tasks) {
+  return (tasks || []).reduce((acc, task) => {
+    const minutes = Number(task?.minutes || 0);
+    return acc + (Number.isFinite(minutes) && minutes > 0 ? minutes : 0);
+  }, 0);
+}
+
+function appendTasksByCapacity(profile, baseTasks, startDateKey, tasksToPlace) {
+  const result = {};
+  Object.entries(baseTasks || {}).forEach(([date, tasks]) => {
+    result[date] = sortTasksInDate([...(tasks || [])]);
+  });
+
+  let queue = [...(tasksToPlace || [])];
+  let cursor = new Date(startDateKey);
+  let guard = 0;
+
+  while (queue.length) {
+    guard += 1;
+    if (guard > 3660) {
+      throw new Error('재분배 실패: 할당 가능한 시간 설정이 부족합니다. 설정에서 요일별 시간을 확인하세요.');
+    }
+
+    const key = toDateKey(cursor);
+    const cap = usableMinutesForDay(profile, cursor);
+    if (cap <= 0) {
+      cursor = addDays(cursor, 1);
+      continue;
+    }
+
+    const dayTasks = result[key] ? [...result[key]] : [];
+    let used = sumTaskMinutes(dayTasks);
+    let placed = 0;
+
+    while (queue.length) {
+      const next = queue[0];
+      const minutes = Math.max(1, Math.floor(Number(next?.minutes || 0)));
+      if (used + minutes > cap) break;
+
+      const task = queue.shift();
+      dayTasks.push({ ...task, date: key, status: 'pending' });
+      used += minutes;
+      placed += 1;
+    }
+
+    if (!placed && !dayTasks.length && queue.length) {
+      const forced = queue.shift();
+      dayTasks.push({ ...forced, date: key, status: 'pending' });
+    }
+
+    if (dayTasks.length) {
+      result[key] = sortTasksInDate(dayTasks);
+    }
+
+    cursor = addDays(cursor, 1);
+  }
+
+  return result;
+}
+
 function parsePageRange(pages) {
   const text = String(pages || '').trim();
   if (!text) return null;
@@ -257,26 +317,6 @@ function sortTasksInDate(tasks) {
   });
 }
 
-function collectUndoneTasks(calendar, todayKey) {
-  const backlog = [];
-  const today = [];
-  const future = [];
-
-  const orderedDates = Object.keys(calendar.tasks || {}).sort();
-  for (const date of orderedDates) {
-    const tasks = calendar.tasks?.[date] || [];
-    for (const task of tasks) {
-      if (task.status === 'done') continue;
-      const item = { ...task, originalDate: date };
-      if (date < todayKey) backlog.push(item);
-      else if (date === todayKey) today.push(item);
-      else future.push(item);
-    }
-  }
-
-  return { backlog, today, future };
-}
-
 export function generatePlan(input, profile) {
   return buildSimplePlan(input, profile);
 }
@@ -300,23 +340,26 @@ export function planToCalendarPlan(plan, existingCalendar) {
 }
 
 export function rebalanceFromToday(profile, calendar, todayKey) {
-  const { backlog, today, future } = collectUndoneTasks(calendar, todayKey);
-  const queue = sortQueueByPageOrder([...backlog, ...today, ...future]);
+  const todayTasks = [...(calendar.tasks?.[todayKey] || [])];
+  const queue = sortQueueByPageOrder(todayTasks.filter((task) => task.status !== 'done'));
   if (!queue.length) return calendar;
 
-  // "오늘 할 일 다음으로 미루기" 동작: 오늘 미완료부터 내일 이후로 재배치.
+  // "오늘 할 일 다음으로 미루기": 오늘 미완료만 내일 이후로 이동.
   const startDateKey = toDateKey(addDays(new Date(todayKey), 1));
-  const redistributed = insertTasksByCapacity(profile, startDateKey, queue);
+  const baseTasks = {};
 
-  const newTasks = {};
   Object.entries(calendar.tasks || {}).forEach(([date, tasks]) => {
-    const doneOnly = tasks.filter((t) => t.status === 'done');
-    if (doneOnly.length) newTasks[date] = doneOnly;
+    if (date !== todayKey) {
+      if (tasks?.length) baseTasks[date] = sortTasksInDate([...tasks]);
+      return;
+    }
+
+    const doneOnly = tasks.filter((task) => task.status === 'done');
+    if (doneOnly.length) {
+      baseTasks[date] = sortTasksInDate(doneOnly);
+    }
   });
 
-  Object.entries(redistributed).forEach(([date, tasks]) => {
-    newTasks[date] = sortTasksInDate([...(newTasks[date] || []), ...tasks]);
-  });
-
-  return { tasks: newTasks };
+  const redistributed = appendTasksByCapacity(profile, baseTasks, startDateKey, queue);
+  return { tasks: redistributed };
 }

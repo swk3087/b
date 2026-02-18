@@ -1,6 +1,72 @@
 const AUTH_KEY = 'planrise_auth';
 const PENDING_TOAST_KEY = 'planrise_pending_toast';
 const TOAST_STACK_ID = 'toastStack';
+const THEME_KEY = 'planrise_theme';
+
+function normalizeTheme(theme) {
+  return theme === 'dark' ? 'dark' : 'light';
+}
+
+function readTheme() {
+  try {
+    return normalizeTheme(localStorage.getItem(THEME_KEY) || 'light');
+  } catch {
+    return 'light';
+  }
+}
+
+function writeTheme(theme) {
+  try {
+    localStorage.setItem(THEME_KEY, normalizeTheme(theme));
+  } catch {
+    // ignore storage errors
+  }
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', normalizeTheme(theme));
+}
+
+function currentTheme() {
+  return normalizeTheme(document.documentElement.getAttribute('data-theme') || 'light');
+}
+
+function updateThemeToggleLabel(button, theme) {
+  button.textContent = theme === 'dark' ? '화이트 모드' : '블랙 모드';
+}
+
+function injectThemeToggle() {
+  const topbar = document.querySelector('header .topbar');
+  if (!topbar) return;
+
+  let button = document.getElementById('themeToggleBtn');
+  if (!button) {
+    button = document.createElement('button');
+    button.id = 'themeToggleBtn';
+    button.type = 'button';
+    button.className = 'ghost theme-toggle';
+    button.setAttribute('aria-label', '블랙/화이트 모드 전환');
+
+    const installWrap = topbar.querySelector('.install-wrap');
+    if (installWrap) {
+      installWrap.prepend(button);
+    } else {
+      button.style.marginLeft = 'auto';
+      topbar.appendChild(button);
+    }
+  }
+
+  updateThemeToggleLabel(button, currentTheme());
+  button.addEventListener('click', () => {
+    const next = currentTheme() === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    writeTheme(next);
+    updateThemeToggleLabel(button, next);
+    showToast(next === 'dark' ? '블랙 모드로 변경되었습니다.' : '화이트 모드로 변경되었습니다.', 'info', 1200);
+  });
+}
+
+applyTheme(readTheme());
 
 export function getAuth() {
   try {
@@ -145,6 +211,14 @@ function markActiveNav() {
   });
 }
 
+function applyLayoutFlags() {
+  if (document.querySelector('header nav')) {
+    document.body.classList.add('has-side-nav');
+  } else {
+    document.body.classList.remove('has-side-nav');
+  }
+}
+
 async function registerPwa() {
   if ('serviceWorker' in navigator) {
     await navigator.serviceWorker.register('/sw.js');
@@ -152,7 +226,10 @@ async function registerPwa() {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
+  applyTheme(readTheme());
   consumePendingToast();
+  injectThemeToggle();
+  applyLayoutFlags();
   wireInstallButton();
   markActiveNav();
   try {
