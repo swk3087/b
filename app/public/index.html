@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlanRiseAI | 홈</title>
+  <link rel="manifest" href="/public/manifest.webmanifest" />
+  <meta name="theme-color" content="#1f7a6f" />
+  <link rel="icon" type="image/svg+xml" href="/public/icons/icon.svg" />
+  <link rel="apple-touch-icon" href="/public/icons/icon.svg" />
+  <link rel="stylesheet" href="/public/css/styles.css" />
+</head>
+<body>
+<header>
+  <div class="topbar">
+    <div class="logo">PlanRiseAI</div>
+    <nav>
+      <a href="/">홈</a>
+      <a href="/planner">플래너</a>
+      <a href="/calendar">캘린더</a>
+      <a href="/dday">D-Day</a>
+      <a href="/settings">설정</a>
+      <a href="/account">내계정</a>
+    </nav>
+    <div class="install-wrap row">
+      <button id="installBtn" class="ghost hidden">설치</button>
+      <button id="logoutBtn" class="ghost">로그아웃</button>
+    </div>
+  </div>
+  <div class="topbar mobile-only">
+    <div class="mobile-bar">
+      <a href="/">홈</a>
+      <a href="/planner">플랜</a>
+      <a href="/calendar">캘린더</a>
+      <a href="/dday">D-Day</a>
+      <a href="/settings">설정</a>
+      <a href="/account">계정</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+    <section class="card">
+      <p class="badge" id="ddayBadge">D-Day -</p>
+      <h1 class="title">오늘의 실행 미션</h1>
+      <p class="sub" id="quote">응원 문구 로딩 중...</p>
+      <div style="margin-top:12px" id="todayTasks"></div>
+      <div class="row">
+        <button id="rebalanceBtn" class="secondary">오늘 할 일 다음으로 미루기(재분배)</button>
+      </div>
+    </section>
+
+    <aside class="card">
+      <h2 class="title">진행 상태</h2>
+      <div class="kpi">
+        <div><small>오늘 할 일</small><strong id="kpiToday">0</strong></div>
+        <div><small>밀린 항목</small><strong id="kpiBacklog">0</strong></div>
+        <div><small>이번 달 AI</small><strong id="kpiAi">0/0</strong></div>
+      </div>
+      <p class="notice" style="margin-top:12px;" id="quotaText"></p>
+    </aside>
+  </div>
+</main>
+
+<script type="module" src="/public/js/common.js"></script>
+<script type="module" src="/public/js/home.js"></script>
+</body>
+</html>

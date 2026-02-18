@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlanRiseAI | D-Day</title>
+  <link rel="manifest" href="/public/manifest.webmanifest" />
+  <link rel="stylesheet" href="/public/css/styles.css" />
+</head>
+<body>
+<header>
+  <div class="topbar">
+    <div class="logo">PlanRiseAI</div>
+    <nav>
+      <a href="/">홈</a>
+      <a href="/planner">플래너</a>
+      <a href="/calendar">캘린더</a>
+      <a href="/dday">D-Day</a>
+      <a href="/settings">설정</a>
+      <a href="/account">내계정</a>
+    </nav>
+    <div class="install-wrap row">
+      <button id="installBtn" class="ghost hidden">설치</button>
+      <button id="logoutBtn" class="ghost">로그아웃</button>
+    </div>
+  </div>
+  <div class="topbar mobile-only">
+    <div class="mobile-bar">
+      <a href="/">홈</a>
+      <a href="/planner">플랜</a>
+      <a href="/calendar">캘린더</a>
+      <a href="/dday">D-Day</a>
+      <a href="/settings">설정</a>
+      <a href="/account">계정</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+    <section class="card">
+      <h1 class="title">D-Day 추가</h1>
+      <p class="sub">대표 D-Day는 하나만 선택할 수 있고, 홈 화면에 표시됩니다.</p>
+      <form id="ddayForm" style="margin-top:12px;">
+        <div class="field"><label>제목</label><input name="title" required placeholder="예: 중간고사 수학" /></div>
+        <div class="field"><label>날짜</label><input type="date" name="targetDate" required /></div>
+        <div class="field"><label><input type="checkbox" name="makePrimary" /> 대표 D-Day로 설정</label></div>
+        <button type="submit">D-Day 추가</button>
+      </form>
+    </section>
+
+    <aside class="card">
+      <h2 class="title">내 D-Day 목록</h2>
+      <div id="ddayList" style="margin-top:10px;"></div>
+    </aside>
+  </div>
+</main>
+
+<script type="module" src="/public/js/common.js"></script>
+<script type="module" src="/public/js/dday.js"></script>
+</body>
+</html>

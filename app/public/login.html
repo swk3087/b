@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlanRiseAI | 로그인</title>
+  <link rel="manifest" href="/public/manifest.webmanifest" />
+  <meta name="theme-color" content="#1f7a6f" />
+  <link rel="icon" type="image/svg+xml" href="/public/icons/icon.svg" />
+  <link rel="apple-touch-icon" href="/public/icons/icon.svg" />
+  <link rel="stylesheet" href="/public/css/styles.css" />
+</head>
+<body>
+<header>
+  <div class="topbar">
+    <div class="logo">PlanRiseAI</div>
+    <p class="notice">테스트 계정: a@b.c / 3087</p>
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+    <section class="card">
+      <h1 class="title">로그인</h1>
+      <form id="loginForm" style="margin-top:12px;">
+        <div class="field"><label>이메일</label><input name="email" type="email" value="a@b.c" required /></div>
+        <div class="field"><label>비밀번호</label><input name="password" type="password" value="3087" required /></div>
+        <div class="row">
+          <button type="submit">로그인</button>
+        </div>
+      </form>
+    </section>
+
+    <aside class="card">
+      <h2 class="title">회원가입</h2>
+      <form id="signupForm">
+        <div class="field"><label>이메일</label><input name="email" type="email" required /></div>
+        <div class="field"><label>비밀번호</label><input name="password" type="password" required /></div>
+        <div class="field"><label><input type="checkbox" name="privacy" required /> 개인정보 처리방침 동의</label></div>
+        <div class="field"><label><input type="checkbox" name="terms" required /> 이용약관 동의</label></div>
+        <button type="submit">회원가입</button>
+      </form>
+      <p class="sub" style="margin-top:10px;" id="authMode">인증 모드 확인 중...</p>
+    </aside>
+  </div>
+</main>
+
+<script type="module" src="/public/js/common.js"></script>
+<script type="module" src="/public/js/login.js"></script>
+</body>
+</html>

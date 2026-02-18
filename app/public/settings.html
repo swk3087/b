@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlanRiseAI | 설정</title>
+  <link rel="manifest" href="/public/manifest.webmanifest" />
+  <link rel="stylesheet" href="/public/css/styles.css" />
+</head>
+<body>
+<header>
+  <div class="topbar">
+    <div class="logo">PlanRiseAI</div>
+    <nav>
+      <a href="/">홈</a>
+      <a href="/planner">플래너</a>
+      <a href="/calendar">캘린더</a>
+      <a href="/dday">D-Day</a>
+      <a href="/settings">설정</a>
+      <a href="/account">내계정</a>
+    </nav>
+    <div class="install-wrap row">
+      <button id="installBtn" class="ghost hidden">설치</button>
+      <button id="logoutBtn" class="ghost">로그아웃</button>
+    </div>
+  </div>
+  <div class="topbar mobile-only">
+    <div class="mobile-bar">
+      <a href="/">홈</a>
+      <a href="/planner">플랜</a>
+      <a href="/calendar">캘린더</a>
+      <a href="/dday">D-Day</a>
+      <a href="/settings">설정</a>
+      <a href="/account">계정</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+    <section class="card">
+      <h1 class="title">학습/실행 설정</h1>
+      <form id="settingsForm" style="margin-top:12px;">
+        <div class="row">
+          <div class="field" style="flex:1;">
+            <label>공부 스타일</label>
+            <select name="style">
+              <option value="rush">빡세게 몰아치기</option>
+              <option value="steady">꾸준히</option>
+            </select>
+          </div>
+          <div class="field" style="flex:1;">
+            <label>독촉 강도</label>
+            <select name="pressure">
+              <option value="soft">부드럽게</option>
+              <option value="normal">보통</option>
+              <option value="hard">강하게</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>휴식 패턴(집중/휴식)</label>
+          <select name="restPattern">
+            <option value="50/10">50분 집중 + 10분 휴식</option>
+            <option value="25/5">25분 집중 + 5분 휴식</option>
+            <option value="90/20">90분 집중 + 20분 휴식</option>
+          </select>
+          <p class="sub">처음에는 50/10을 권장합니다.</p>
+        </div>
+
+        <div class="field">
+          <label>버퍼 비율 <span id="bufferPercent" class="badge">20%</span></label>
+          <div class="row">
+            <input id="bufferSlider" type="range" min="0.1" max="0.4" step="0.01" style="flex:1;" />
+            <input type="number" min="0.1" max="0.4" step="0.01" name="bufferRatio" style="width:110px;" />
+          </div>
+          <p class="sub">하루 가능 시간이 150분이면, 버퍼 0.2일 때 약 120분만 배정합니다.</p>
+        </div>
+
+        <div class="field">
+          <label>오프데이(쉬는 요일)</label>
+          <div class="day-grid">
+            <label class="day-item"><input type="checkbox" name="offDay" value="0" />일</label>
+            <label class="day-item"><input type="checkbox" name="offDay" value="1" />월</label>
+            <label class="day-item"><input type="checkbox" name="offDay" value="2" />화</label>
+            <label class="day-item"><input type="checkbox" name="offDay" value="3" />수</label>
+            <label class="day-item"><input type="checkbox" name="offDay" value="4" />목</label>
+            <label class="day-item"><input type="checkbox" name="offDay" value="5" />금</label>
+            <label class="day-item"><input type="checkbox" name="offDay" value="6" />토</label>
+          </div>
+          <p class="sub">체크한 요일에는 할 일이 배정되지 않습니다.</p>
+        </div>
+
+        <div class="field">
+          <label>요일별 가능 시간(분)</label>
+          <div class="day-grid">
+            <label class="day-item">일<input type="number" min="0" step="10" data-day-hour="0" /></label>
+            <label class="day-item">월<input type="number" min="0" step="10" data-day-hour="1" /></label>
+            <label class="day-item">화<input type="number" min="0" step="10" data-day-hour="2" /></label>
+            <label class="day-item">수<input type="number" min="0" step="10" data-day-hour="3" /></label>
+            <label class="day-item">목<input type="number" min="0" step="10" data-day-hour="4" /></label>
+            <label class="day-item">금<input type="number" min="0" step="10" data-day-hour="5" /></label>
+            <label class="day-item">토<input type="number" min="0" step="10" data-day-hour="6" /></label>
+          </div>
+          <p class="sub">예시: 평일 150분, 토요일 180분, 일요일 0분</p>
+        </div>
+
+        <button type="submit">설정 저장</button>
+      </form>
+    </section>
+
+    <aside class="card">
+      <h2 class="title">알림 / 푸시</h2>
+      <p class="sub">브라우저 알림 권한과 Push 구독 정보를 저장합니다.</p>
+      <div class="row" style="margin-top:12px;">
+        <button id="notifPermBtn">알림 권한 요청</button>
+        <button id="pushSubBtn" class="secondary">Push 구독 저장</button>
+        <button id="testNotifBtn" class="ghost">서버 푸시 테스트</button>
+      </div>
+      <p class="sub" id="notifState" style="margin-top:10px;">상태 확인 중...</p>
+    </aside>
+  </div>
+</main>
+
+<script type="module" src="/public/js/common.js"></script>
+<script type="module" src="/public/js/settings.js"></script>
+</body>
+</html>

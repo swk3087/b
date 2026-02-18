@@ -1,0 +1,20 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Background Gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#142C54"></stop>
+      <stop offset="100%" stop-color="#0B1F3B"></stop>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded Background -->
+  <rect x="0" y="0" width="1024" height="1024" rx="220" fill="url(#bgGradient)"></rect>
+
+  <!-- Upward Graph Line -->
+  <polyline points="220,680 400,540 580,620 760,420" fill="none" stroke="#FFFFFF" stroke-width="70" stroke-linecap="round" stroke-linejoin="round"></polyline>
+
+  <!-- Lime Check Mark -->
+  <polyline points="710,460 770,520 900,360" fill="none" stroke="#B6F500" stroke-width="85" stroke-linecap="round" stroke-linejoin="round"></polyline>
+
+</svg>

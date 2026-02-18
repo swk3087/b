@@ -1,0 +1,32 @@
+{
+  "app": {
+    "domain": "app.planriseai.kro.kr",
+    "baseUrl": "http://localhost:3000",
+    "logRetentionDays": 365,
+    "logQueryDefaultDays": 30,
+    "logQueryMaxDays": 365,
+    "logQueryDefaultLimit": 500,
+    "logQueryMaxLimit": 5000
+  },
+  "openai": {
+    "apiKey": "",
+    "model": "gpt-4o-mini"
+  },
+  "firebase": {
+    "apiKey": "",
+    "authDomain": "",
+    "projectId": "",
+    "messagingSenderId": "",
+    "appId": ""
+  },
+  "firebaseAdmin": {
+    "projectId": "",
+    "clientEmail": "",
+    "privateKey": ""
+  },
+  "webPush": {
+    "subject": "mailto:admin@planriseai.kro.kr",
+    "publicKey": "",
+    "privateKey": ""
+  }
+}

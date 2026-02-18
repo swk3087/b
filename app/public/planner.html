@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlanRiseAI | AI 플래너</title>
+  <link rel="manifest" href="/public/manifest.webmanifest" />
+  <meta name="theme-color" content="#1f7a6f" />
+  <link rel="icon" type="image/svg+xml" href="/public/icons/icon.svg" />
+  <link rel="apple-touch-icon" href="/public/icons/icon.svg" />
+  <link rel="stylesheet" href="/public/css/styles.css" />
+</head>
+<body>
+<header>
+  <div class="topbar">
+    <div class="logo">PlanRiseAI</div>
+    <nav>
+      <a href="/">홈</a>
+      <a href="/planner">플래너</a>
+      <a href="/calendar">캘린더</a>
+      <a href="/dday">D-Day</a>
+      <a href="/settings">설정</a>
+      <a href="/account">내계정</a>
+    </nav>
+    <div class="install-wrap row">
+      <button id="installBtn" class="ghost hidden">설치</button>
+      <button id="logoutBtn" class="ghost">로그아웃</button>
+    </div>
+  </div>
+  <div class="topbar mobile-only">
+    <div class="mobile-bar">
+      <a href="/">홈</a>
+      <a href="/planner">플랜</a>
+      <a href="/calendar">캘린더</a>
+      <a href="/dday">D-Day</a>
+      <a href="/settings">설정</a>
+      <a href="/account">계정</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+    <section class="card">
+      <h1 class="title">AI 플랜 생성</h1>
+      <p class="sub">문제집 끝내기 또는 내신 대비하기를 선택해 분량을 자동 분배합니다.</p>
+      <form id="planForm" style="margin-top:12px;">
+        <div class="field">
+          <label>유형</label>
+          <select name="taskType">
+            <option value="book_finish">문제집 끝내기</option>
+            <option value="exam_prep">내신 대비하기</option>
+          </select>
+        </div>
+        <div class="field"><label>과목</label><input name="subject" required /></div>
+        <div class="field"><label>문제집 이름</label><input name="bookName" required /></div>
+        <div class="row">
+          <div class="field" style="flex:1;"><label>시작 페이지</label><input type="number" name="startPage" value="1" min="1" /></div>
+          <div class="field" style="flex:1;"><label>전체 페이지(남은)</label><input type="number" name="totalPages" required min="1" /></div>
+        </div>
+        <div class="row">
+          <div class="field" style="flex:1;"><label>페이지당 소요(분)</label><input type="number" name="minutesPerPage" required min="1" /></div>
+          <div class="field" style="flex:1;"><label>마감일</label><input type="date" name="dueDate" required /></div>
+        </div>
+        <div class="field"><label>특별 지시사항</label><textarea name="notes" placeholder="예: 수학은 주말에 더 많이"></textarea></div>
+        <div class="field"><label><input type="checkbox" name="pressureMode" checked /> 시간 압박 모드</label></div>
+        <button type="submit">플랜 생성</button>
+      </form>
+    </section>
+
+    <aside class="card">
+      <h2 class="title">생성 결과</h2>
+      <p class="sub">생성된 일정 미리보기</p>
+      <div id="planPreview" style="margin-top:10px;"></div>
+    </aside>
+  </div>
+</main>
+
+<script type="module" src="/public/js/common.js"></script>
+<script type="module" src="/public/js/planner.js"></script>
+</body>
+</html>

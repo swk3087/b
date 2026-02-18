@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlanRiseAI | 캘린더</title>
+  <link rel="manifest" href="/public/manifest.webmanifest" />
+  <meta name="theme-color" content="#1f7a6f" />
+  <link rel="icon" type="image/svg+xml" href="/public/icons/icon.svg" />
+  <link rel="apple-touch-icon" href="/public/icons/icon.svg" />
+  <link rel="stylesheet" href="/public/css/styles.css" />
+</head>
+<body>
+<header>
+  <div class="topbar">
+    <div class="logo">PlanRiseAI</div>
+    <nav>
+      <a href="/">홈</a>
+      <a href="/planner">플래너</a>
+      <a href="/calendar">캘린더</a>
+      <a href="/dday">D-Day</a>
+      <a href="/settings">설정</a>
+      <a href="/account">내계정</a>
+    </nav>
+    <div class="install-wrap row">
+      <button id="installBtn" class="ghost hidden">설치</button>
+      <button id="logoutBtn" class="ghost">로그아웃</button>
+    </div>
+  </div>
+  <div class="topbar mobile-only">
+    <div class="mobile-bar">
+      <a href="/">홈</a>
+      <a href="/planner">플랜</a>
+      <a href="/calendar">캘린더</a>
+      <a href="/dday">D-Day</a>
+      <a href="/settings">설정</a>
+      <a href="/account">계정</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="card">
+    <div class="row" style="justify-content:space-between; align-items:flex-end;">
+      <div>
+        <h1 class="title">캘린더 기반 할 일</h1>
+        <p class="sub">날짜별 계획을 직접 수정하거나 삭제할 수 있습니다.</p>
+      </div>
+      <div class="field" style="width:180px; margin-bottom:0;">
+        <label>월 선택</label>
+        <input type="month" id="monthInput" />
+      </div>
+    </div>
+    <div class="calendar-tools">
+      <button id="clearMonthBtn" class="warn">이번 달 일정 모두 삭제</button>
+      <button id="clearAllBtn" class="ghost">전체 일정 모두 삭제</button>
+    </div>
+    <div id="calendarList" style="margin-top:14px;"></div>
+  </section>
+</main>
+
+<script type="module" src="/public/js/common.js"></script>
+<script type="module" src="/public/js/calendar.js"></script>
+</body>
+</html>
